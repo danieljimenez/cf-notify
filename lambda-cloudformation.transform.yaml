@@ -24,13 +24,17 @@ Resources:
       # language=JSON
       AssumeRolePolicyDocument: |
         {
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": { "Service": ["lambda.amazonaws.com"] },
-                    "Action": "sts:AssumeRole"
-                }
-            ]
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
         }
 
   CFNotifyFunctionPermissions:
@@ -71,20 +75,18 @@ Resources:
       # language=json
       PolicyDocument: !Sub |
         {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Action": [
-                        "sns:Publish"
-                    ],
-                    "Effect": "Allow",
-                    "Resource": "${CFNotifyTopic}",
-                    "Principal": "*"
-                }
-            ]
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": [
+                "sns:Publish"
+              ],
+              "Effect": "Allow",
+              "Resource": "${CFNotifyTopic}",
+              "Principal": "*"
+            }
+          ]
         }
-
-
 
 Outputs:
   CFNotifyEventSource:
