@@ -27,16 +27,16 @@ build/venv/bin/activate: requirements.txt
 	touch $(temp_dir)/venv/bin/activate
 	aws cloudformation package \
 		--s3-bucket $(s3_bucket) \
+		--s3-prefix lambda \
 		--template-file $(temp_dir)/lambda-cloudformation.transform.yaml \
 		--output-template-file ${temp_dir}/cloudformation.yaml \
 		--force-upload &>/dev/null
 
 deploy: build
-	$(call check_defined, stack_name)
 	$(call check_defined, slack_target)
 	$(call check_defined, webhook_url)
 	aws cloudformation deploy \
 		--template-file $(temp_dir)/cloudformation.yaml \
 		--capabilities CAPABILITY_IAM \
-		--stack-name $(stack_name) \
+		--stack-name cf-notify-$(subst @,,$(subst #,,$(slack_target))) \
 		--parameter-overrides WebHookURL=$(webhook_url) Target=$(slack_target)
